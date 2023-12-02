@@ -37,6 +37,7 @@
 #include "include/NVMAddress.h"
 #include "include/NVMDataBlock.h"
 #include "include/NVMTypes.h"
+#include "Areas/Areas.h"
 #include <iostream>
 #include <signal.h>
 
@@ -117,30 +118,12 @@ class NVMObject;
 class NVMainRequest
 {
   public:
-    NVMainRequest( ) 
-    { 
-        type = NOP;
-        bulkCmd = CMD_NOP; 
-        threadId = 0; 
-        tag = 0; 
-        reqInfo = NULL; 
-        flags = 0;
-        arrivalCycle = 0; 
-        issueCycle = 0; 
-        queueCycle = 0;
-        completionCycle = 0; 
-        isPrefetch = false; 
-        programCounter = 0; 
-        burstCount = 1;
-        writeProgress = 0;
-        cancellations = 0;
-        owner = NULL;
-    };
+    NVMainRequest( ) ;
 
-    ~NVMainRequest( )
-    { 
-    };
+    ~NVMainRequest( );
 
+    enValue energy;   //energy used in request
+    tiValue time;     //time cells need to read/write 
     NVMAddress address;            //< Address of request
     OpType type;                   //< Operation type of request (read, write, etc)
     BulkCommand bulkCmd;           //< Bulk Commands (i.e., Read+Precharge, Write+Precharge, etc)
@@ -168,6 +151,11 @@ class NVMainRequest
 
     const NVMainRequest& operator=( const NVMainRequest& );
     bool operator<( NVMainRequest m ) const;
+
+    void SetEnergy(enValue energy);
+    void SetTime(tiValue time);
+
+    //NVMainRequest clone(NVMainRequest request);
 
     enum NVMainRequestFlags
     {

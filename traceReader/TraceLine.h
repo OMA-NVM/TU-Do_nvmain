@@ -37,6 +37,7 @@
 #include "include/NVMAddress.h"
 #include "include/NVMTypes.h"
 #include "include/NVMainRequest.h"
+#include "Areas/Areas.h"
 
 namespace NVM {
 
@@ -56,6 +57,10 @@ class TraceLine {
     NVMDataBlock& GetData();
     NVMDataBlock& GetOldData();
     ncounters_t GetThreadId();
+    void SetEnergy(enValue energy);
+    enValue GetEnergy();
+    void SetTime(tiValue time);
+    tiValue GetTime();
 
    private:
     NVMAddress address;
@@ -65,6 +70,8 @@ class TraceLine {
     NVMDataBlock data;
     NVMDataBlock oldData;
     ncounters_t threadId;
+    enValue energy;
+    tiValue time;
 };
 
 };  // namespace NVM

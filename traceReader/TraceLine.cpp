@@ -59,6 +59,7 @@ void TraceLine::SetLine(NVMAddress& addr, uint64_t pc, OpType op, ncycle_t cy,
     this->data = data;
     this->oldData = oldData;
     this->threadId = threadId;
+    this->energy = 0;
 }
 
 /* Get the address of the memory operation. */
@@ -77,3 +78,19 @@ NVMDataBlock& TraceLine::GetData() { return data; }
 NVMDataBlock& TraceLine::GetOldData() { return oldData; }
 
 ncounters_t TraceLine::GetThreadId() { return threadId; }
+
+void TraceLine::SetEnergy( enValue en ){
+    this->energy = en;
+}
+
+enValue TraceLine::GetEnergy() {
+    return energy;
+}
+
+void TraceLine::SetTime( tiValue ti ){
+    this->time = ti;
+}
+
+tiValue TraceLine::GetTime() {
+    return time;
+}

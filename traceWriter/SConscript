@@ -43,5 +43,8 @@ NVMainSource('NVMainTrace/NVMainTraceWriter.cpp')
 NVMainSource('BitFlipTrace/BitFlipTraceWriter.cpp')
 NVMainSource('VerilogTrace/VerilogTraceWriter.cpp')
 NVMainSource('DRAMPower2Trace/DRAMPower2TraceWriter.cpp')
+NVMainSource('AreaTrace/AreaTraceWriter.cpp')
+NVMainSource('AreaTrace/AreaAccessTraceWriter.cpp')
+NVMainSource('AreaTrace/AreaStatisticsTraceWriter.cpp')
 NVMainSource('TraceWriterFactory.cpp')
 

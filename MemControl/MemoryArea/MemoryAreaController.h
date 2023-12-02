@@ -31,50 +31,61 @@
 *                     Website: http://www.cse.psu.edu/~poremba/ )
 *******************************************************************************/
 
-#include "MemControl/MemoryControllerFactory.h"
-#include "MemControl/FCFS/FCFS.h"
-#include "MemControl/FRFCFS/FRFCFS.h"
-#include "MemControl/FRFCFS-WQF/FRFCFS-WQF.h"
-#include "MemControl/PerfectMemory/PerfectMemory.h"
-#include "MemControl/DRAMCache/DRAMCache.h"
-#include "MemControl/LH-Cache/LH-Cache.h"
-#include "MemControl/LO-Cache/LO-Cache.h"
-#include "MemControl/PredictorDRC/PredictorDRC.h"
-#include "MemControl/MemoryArea/MemoryAreaController.h"
+#ifndef __MEMCONTROL_MEMORYAREACONTROLLER_H__
+#define __MEMCONTROL_MEMORYAREACONTROLLER_H__
 
-#include <iostream>
+#include "src/MemoryController.h"
+#include "Areas/Energy/EnergyController.h"
+#include "Areas/Timing/TimingController.h"
 
-using namespace NVM;
+namespace NVM {
 
-MemoryController *MemoryControllerFactory::CreateNewController( std::string controller ) 
+class MemoryAreaController : public MemoryController
 {
-    MemoryController *memoryController = NULL;
+  public:
+    MemoryAreaController( );
+    ~MemoryAreaController( ) { }
 
-    if( controller == "" )
-        std::cout << "NVMain: MEM_CTL is not set in configuration file!" << std::endl;
+    void SetConfig( Config *conf, bool createChildren = true );
 
-    if( controller == "FCFS" )
-        memoryController = new FCFS( );
-    else if( controller == "FRFCFS" )
-        memoryController = new FRFCFS( );
-    else if( controller == "FRFCFS-WQF" || controller == "FRFCFS_WQF" )
-        memoryController = new FRFCFS_WQF( );
-    else if( controller == "PerfectMemory" )
-        memoryController = new PerfectMemory( );
-    else if( controller == "DRC" )
-        memoryController = new DRAMCache( );
-    else if( controller == "LH_Cache" )
-        memoryController = new LH_Cache( );
-    else if( controller == "LO_Cache" )
-        memoryController = new LO_Cache( );
-    else if( controller == "PredictorDRC" )
-        memoryController = new PredictorDRC( );
-    else if( controller == "MemoryArea" )
-        memoryController = new MemoryAreaController( );
+    bool IssueCommand( NVMainRequest *request );
+    bool IsIssuable( NVMainRequest *request, FailReason *fail = NULL );
+    bool RequestComplete( NVMainRequest * request );
 
-    if( memoryController == NULL )
-        std::cout << "NVMain: Unknown memory controller `" 
-            << controller << "'." << std::endl;
+    void UpdateAreas( NVMainRequest *request );
+    std::string ConvertDataString(NVMDataBlock &data);
 
-    return memoryController;
-}
+    void Cycle( ncycle_t );
+
+    void RegisterStats( );
+    void CalculateStats( );
+
+  private:
+    uint64_t queueSize;
+
+    /* Stats */
+    uint64_t measuredLatencies, measuredQueueLatencies, measuredTotalLatencies;
+    double averageLatency, averageQueueLatency, averageTotalLatency;
+    uint64_t mem_reads, mem_writes;
+    uint64_t rb_hits;
+    uint64_t rb_miss;
+
+    EnergyController energyController;
+    TimingController timingController;
+
+    uint64_t interfaceAddress;
+    bool addressSet;
+    int areaNumbers;
+    int channel;
+    int rank;
+    int bank;
+    int subarray;
+    int row;
+    int column;
+    int writeMode;
+    
+};
+
+};
+
+#endif

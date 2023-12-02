@@ -39,6 +39,9 @@
 #include "traceWriter/BitFlipTrace/BitFlipTraceWriter.h"
 #include "traceWriter/VerilogTrace/VerilogTraceWriter.h"
 #include "traceWriter/DRAMPower2Trace/DRAMPower2TraceWriter.h"
+#include "traceWriter/AreaTrace/AreaTraceWriter.h"
+#include "traceWriter/AreaTrace/AreaAccessTraceWriter.h"
+#include "traceWriter/AreaTrace/AreaStatisticsTraceWriter.h"
 
 using namespace NVM;
 
@@ -58,6 +61,12 @@ GenericTraceWriter *TraceWriterFactory::CreateNewTraceWriter( std::string writer
         tracer = new VerilogTraceWriter( );
     else if( writer == "DRAMPower2Trace" )
         tracer = new DRAMPower2TraceWriter( );
+    else if( writer == "AreaTrace" )
+        tracer = new AreaTraceWriter( );
+    else if( writer == "AreaAccessTrace" )
+        tracer = new AreaAccessTraceWriter( );
+    else if( writer == "AreaStatisticsTrace" )
+        tracer = new AreaStatisticsTraceWriter( );
 
     if( tracer == NULL )
         std::cout << "NVMain: Unknown trace writer `" << writer << "'." 

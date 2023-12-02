@@ -367,6 +367,9 @@ void NVMain::PrintPreTrace( NVMainRequest *request )
                     request->threadId 
                   );
 
+        tl.SetEnergy(request->energy);
+        tl.SetTime(request->time);
+
         preTracer->SetNextAccess( &tl );
     }
 }
